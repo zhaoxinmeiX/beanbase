@@ -1,0 +1,56 @@
+[
+    {
+        "id": "1",
+        "name": "Ethiopia Yirgacheffe",
+        "origin": "Ethiopia",
+        "roastLevel": "Light",
+        "quantity": 12,
+        "price": 28.5,
+        "inStock": true
+    },
+    {
+        "id": "2",
+        "name": "Colombia Supremo",
+        "origin": "Colombia",
+        "roastLevel": "Medium",
+        "quantity": 3,
+        "price": 22.0,
+        "inStock": true
+    },
+    {
+        "id": "3",
+        "name": "Sumatra Mandheling",
+        "origin": "Indonesia",
+        "roastLevel": "Dark",
+        "quantity": 0,
+        "price": 25.0,
+        "inStock": false
+    },
+    {
+        "id": "4",
+        "name": "Guatemala Antigua",
+        "origin": "Guatemala",
+        "roastLevel": "Medium",
+        "quantity": 8,
+        "price": 26.0,
+        "inStock": true
+    },
+    {
+        "id": "5",
+        "name": "Kenya AA",
+        "origin": "Kenya",
+        "roastLevel": "Light",
+        "quantity": 5,
+        "price": 32.0,
+        "inStock": true
+    },
+    {
+        "id": "6",
+        "name": "Brazil Santos",
+        "origin": "Brazil",
+        "roastLevel": "Dark",
+        "quantity": 15,
+        "price": 19.5,
+        "inStock": true
+    }
+]
