@@ -1,9 +1,10 @@
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, Pencil } from 'lucide-react';
 import type { Bean } from '@/types/bean';
 import { useBeanStore } from '@/store/useBeanStore';
 
 interface BeanRowProps {
     bean: Bean;
+    onEdit: (bean: Bean) => void;
 }
 
 /** Roast level badge colors */
@@ -13,7 +14,7 @@ const roastColors: Record<Bean['roastLevel'], string> = {
     Dark: 'bg-stone-700 text-white',
 };
 
-export default function BeanRow({ bean }: BeanRowProps) {
+export default function BeanRow({ bean, onEdit }: BeanRowProps) {
     const adjustQuantity = useBeanStore((s) => s.adjustQuantity);
     const isLowStock = bean.quantity <= 5 && bean.quantity > 0;
 
@@ -83,6 +84,17 @@ export default function BeanRow({ bean }: BeanRowProps) {
                         Out of Stock
                     </span>
                 )}
+            </td>
+
+            {/* Actions */}
+            <td className="px-4 py-3">
+                <button
+                    onClick={() => onEdit(bean)}
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-gray-400 transition-colors hover:bg-gray-100 hover:text-blue-600"
+                    aria-label={`Edit ${bean.name}`}
+                >
+                    <Pencil size={15} />
+                </button>
             </td>
         </tr>
     );

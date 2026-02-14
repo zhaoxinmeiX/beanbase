@@ -1,17 +1,40 @@
 import { useState, useMemo } from 'react';
-import { Coffee, Search } from 'lucide-react';
+import { Coffee, Plus, Search } from 'lucide-react';
 import { useBeanStore } from '@/store/useBeanStore';
 import BeanTable from '@/components/BeanTable';
 import SearchBar from '@/components/SearchBar';
 import FilterGroup from '@/components/FilterGroup';
+import Modal from '@/components/Modal';
+import BeanForm from '@/components/BeanForm';
+import type { Bean } from '@/types/bean';
 
 export default function InventoryPage() {
   const beans = useBeanStore((s) => s.beans);
+  const addBean = useBeanStore((s) => s.addBean);
+  const updateBean = useBeanStore((s) => s.updateBean);
 
-  // Page-level UI state (not in Zustand — only needed here)
+  // Filter state
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRoast, setFilterRoast] = useState('');
   const [filterOrigin, setFilterOrigin] = useState('');
+
+  const [editingBean, setEditingBean] = useState<Bean | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openAddModal = () => {
+    setEditingBean(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (bean: Bean) => {
+    setEditingBean(bean);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingBean(null);
+  };
 
   // Derive unique origins from data
   const origins = useMemo(
@@ -45,6 +68,13 @@ export default function InventoryPage() {
               : `${beans.length} ${beans.length === 1 ? 'item' : 'items'} in stock`}
           </p>
         </div>
+        <button
+          onClick={openAddModal}
+          className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+        >
+          <Plus size={16} />
+          Add Bean
+        </button>
       </div>
 
       {/* Search & Filter Bar */}
@@ -63,9 +93,8 @@ export default function InventoryPage() {
 
       {/* Table, Filter-Empty, or Global-Empty */}
       {filteredBeans.length > 0 ? (
-        <BeanTable beans={filteredBeans} />
+        <BeanTable beans={filteredBeans} onEdit={openEditModal} />
       ) : beans.length > 0 ? (
-        /* Has data but filters matched nothing */
         <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white py-16">
           <Search size={48} className="text-gray-300" />
           <h3 className="mt-4 text-lg font-medium text-gray-700">
@@ -76,7 +105,6 @@ export default function InventoryPage() {
           </p>
         </div>
       ) : (
-        /* No data at all */
         <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white py-16">
           <Coffee size={48} className="text-gray-300" />
           <h3 className="mt-4 text-lg font-medium text-gray-700">
@@ -87,6 +115,27 @@ export default function InventoryPage() {
           </p>
         </div>
       )}
+
+      {/* Add / Edit Modal */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={editingBean ? 'Edit Bean' : 'Add New Bean'}
+      >
+        <BeanForm
+          key={editingBean?.id ?? 'add'}
+          initialData={editingBean ?? undefined}
+          buttonText={editingBean ? 'Save Changes' : 'Add Bean'}
+          onSubmit={(data) => {
+            if (editingBean) {
+              updateBean(editingBean.id, data);
+            } else {
+              addBean(data);
+            }
+            closeModal();
+          }}
+        />
+      </Modal>
     </div>
   );
 }

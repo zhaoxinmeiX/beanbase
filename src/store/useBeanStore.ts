@@ -16,10 +16,8 @@ interface BeanState {
 export const useBeanStore = create<BeanState>()(
     persist(
         (set) => ({
-            // Initial state: load from mock data
             beans: initialBeans as Bean[],
 
-            // Add a new bean with auto-generated UUID
             addBean: (newBean) =>
                 set((state) => ({
                     beans: [
@@ -28,7 +26,6 @@ export const useBeanStore = create<BeanState>()(
                     ],
                 })),
 
-            // Update an existing bean by ID (partial update)
             updateBean: (id, updates) =>
                 set((state) => ({
                     beans: state.beans.map((bean) =>
@@ -36,13 +33,11 @@ export const useBeanStore = create<BeanState>()(
                     ),
                 })),
 
-            // Delete a bean by ID
             deleteBean: (id) =>
                 set((state) => ({
                     beans: state.beans.filter((bean) => bean.id !== id),
                 })),
 
-            // Adjust quantity by delta (+1/-1), auto-toggle inStock
             adjustQuantity: (id, delta) =>
                 set((state) => ({
                     beans: state.beans.map((bean) => {
@@ -57,7 +52,7 @@ export const useBeanStore = create<BeanState>()(
                 })),
         }),
         {
-            name: 'bean-storage', // localStorage key
+            name: 'bean-storage',
         },
     ),
 );

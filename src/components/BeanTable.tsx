@@ -3,9 +3,10 @@ import BeanRow from '@/components/BeanRow';
 
 interface BeanTableProps {
     beans: Bean[];
+    onEdit: (bean: Bean) => void;
 }
 
-export default function BeanTable({ beans }: BeanTableProps) {
+export default function BeanTable({ beans, onEdit }: BeanTableProps) {
     return (
         <div className="overflow-x-auto bg-white rounded-lg border border-gray-200 shadow-sm">
             <table className="w-full text-sm">
@@ -17,11 +18,12 @@ export default function BeanTable({ beans }: BeanTableProps) {
                         <th className="px-4 py-3 font-medium">Quantity (kg)</th>
                         <th className="px-4 py-3 font-medium">Price ($/kg)</th>
                         <th className="px-4 py-3 font-medium">Status</th>
+                        <th className="px-4 py-3 font-medium w-20">Actions</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                     {beans.map((bean) => (
-                        <BeanRow key={bean.id} bean={bean} />
+                        <BeanRow key={bean.id} bean={bean} onEdit={onEdit} />
                     ))}
                 </tbody>
             </table>
